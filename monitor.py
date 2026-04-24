@@ -2,6 +2,7 @@ import time
 import hashlib
 import requests
 import os
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -103,7 +104,9 @@ def main():
                     print("No changes detected.")
                     if os.path.exists(current_screenshot): os.remove(current_screenshot)
             
-            time.sleep(CHECK_INTERVAL)
+            sleep_value = CHECK_INTERVAL + random.randint(-20, 20)
+            sleep_value = max(10, sleep_value)
+            time.sleep(sleep_value)
             
     except KeyboardInterrupt:
         print("\nScript stopped manually.")
