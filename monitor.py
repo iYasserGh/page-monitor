@@ -16,6 +16,7 @@ TELEGRAM_BOT_TOKEN = os.environ.get('BOT_TOKEN', 'your_bot_token_here')
 TELEGRAM_CHAT_ID = os.environ.get('CHAT_ID', 'your_chat_id_here')
 URL_TO_MONITOR = os.environ.get('URL_TO_MONITOR', 'your_url_to_monitor_here')
 CHECK_INTERVAL = int(os.environ.get('CHECK_INTERVAL', 300))
+RISK_MODE = os.environ.get('RISK_MODE', 'False').lower() == 'true'
 # ============================================
 
 def send_telegram_photo(photo_path: str, caption: str):
@@ -104,8 +105,13 @@ def main():
                     print("No changes detected.")
                     if os.path.exists(current_screenshot): os.remove(current_screenshot)
             
-            sleep_value = CHECK_INTERVAL + random.randint(-20, 20)
-            sleep_value = max(10, sleep_value)
+            if RISK_MODE:
+                # may block the ip by the wevsite
+                sleep_value = CHECK_INTERVAL
+            else:
+                sleep_value = CHECK_INTERVAL + random.randint(-20, 20)
+                sleep_value = max(10, sleep_value)
+            
             time.sleep(sleep_value)
             
     except KeyboardInterrupt:
