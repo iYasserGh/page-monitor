@@ -74,7 +74,12 @@ def main():
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--remote-debugging-port=9222")
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    if os.name == 'nt' or not os.path.exists("/usr/bin/chromedriver"):  # Windows
+        service = Service(ChromeDriverManager().install())
+    elif os.name == 'posix':  # Linux/Mac
+        service = Service(executable_path="/usr/bin/chromedriver")
+
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     
     previous_hash = None
     old_screenshot = "previous_state.png"
