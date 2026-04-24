@@ -75,6 +75,8 @@ def main():
     previous_hash = None
     old_screenshot = "previous_state.png"
 
+    send_telegram_photo("monitoring_started.jpg", "<b>Monitoring Started</b>\nThe monitoring system has been initiated and is now active.")    
+
     try:
         print("Monitoring system with screenshots is running...")
         while True:
